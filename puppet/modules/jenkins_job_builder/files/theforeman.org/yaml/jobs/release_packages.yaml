@@ -37,7 +37,7 @@
           steps:
             - trigger-builds:
                 - project: packaging_build_deb_coreproject
-                  predefined-parameters: "repoowner=theforeman\nproject=${project}\nonlyos=all\nrepo=${major_version}\nversion=${major_version}\ngitrelease=false"
+                  predefined-parameters: "repoowner=theforeman\nproject=${project}\nonlyos=all\nrepo=deb/${major_version}\nversion=${major_version}\ngitrelease=false"
                   block: true
     publishers:
       - pipeline:
