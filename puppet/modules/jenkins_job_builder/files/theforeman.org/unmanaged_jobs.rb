@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
 
 require 'net/http'
+require 'uri'
 require 'json'
+require 'pry-byebug'
 
 def help
   puts "USAGE:\t#{__FILE__} JENKINS_JOB_BUILDER_INIFILE"
@@ -13,7 +15,8 @@ def managed?(job)
 end
 
 def get_jenkins_url_from_ini(ini_file)
-  regex = /url\s?=(.*\/\/)?/
+  # regex = /url\s?=(.*\/\/)?/
+  regex = /url\s?=/
 
   lines = File.open(ini_file, "r") do |file|
     file.readlines
@@ -41,11 +44,10 @@ def main
 
   url = get_jenkins_url_from_ini(ARGV.pop)
   fail "url is blank" unless url
-
-  payload = Net::HTTP.get(url, '/api/json?tree=jobs[name,description]')
-
+  uri = URI.parse(url)
+  http = Net::HTTP.new(uri.host, uri.port)
+  payload = http.get('/api/json?tree=jobs[name,description]').body
   unmanaged_jobs = find_unmanaged_jobs_from_payload(payload)
-
   puts format_jobs_for_output(unmanaged_jobs)
 end
 
