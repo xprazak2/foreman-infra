@@ -19,6 +19,13 @@
           name: project
           description: 'Name of the project to build from foreman-packaging.'
       - string:
+        name: package_group
+        choices:
+          - foreman
+          - katello
+          - plugins
+        description: 'Name of the packages subfolder in foreman-packaging'
+      - string:
           name: tag
           description: 'tito/git tag name to build specifically, default will be the latest tagged build available, e.g. rubygem-fog-1.21.0-1'
       - bool:

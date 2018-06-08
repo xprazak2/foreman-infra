@@ -11,6 +11,13 @@
       - string:
           name: major_version
           description: '1.5, 1.6 etc.'
+      - string:
+        name: package_group
+        choices:
+          - foreman
+          - katello
+          - plugins
+        description: 'Name of the packages subfolder in foreman-packaging'
     axes:
       - axis:
           type: user-defined
@@ -23,7 +30,7 @@
     builders:
       - trigger-builds:
         - project: packaging_build_rpm
-          predefined-parameters: "branch=rpm/${major_version}\nproject=${project}\nscratch=false\ngitrelease=false"
+          predefined-parameters: "branch=rpm/${major_version}\nproject=${project}\nscratch=false\ngitrelease=false\npackage_group=${package_group}"
           block: true
       - conditional-step:
           condition-kind: not

@@ -31,7 +31,12 @@ args="-o $(pwd)/rel-eng/build/"
 [ -n "${nightly_jenkins_job}" ] && args="$args --arg jenkins_job=${nightly_jenkins_job}"
 [ -n "${nightly_jenkins_job_id}" ] && args="$args --arg jenkins_job_id=${nightly_jenkins_job_id}"
 
-cd $project
+if [ $(echo $branch | grep 1.16 || echo $branch | grep 1.17) ]; then
+  cd $project
+else
+  cd packages/$package_group/$project
+fi
+
 tito release ${args} ${releaser} 2>&1 | tee tito.log
 
 if [ ${PIPESTATUS[0]} -ne 0 ]; then
